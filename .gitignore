@@ -1,0 +1,5 @@
+/node_modules
+**/**.jpg
+**/**.zip
+**/**lock.json
+.env

@@ -1,48 +1,23 @@
-import './App.css';
+import './App.scss';
 
-import AWS from 'aws-sdk';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-
-
-const { REACT_APP_BUCKET_NAME, REACT_APP_IAM_USER_KEY, REACT_APP_IAM_USER_SECRET } = process.env;
-console.log({ REACT_APP_BUCKET_NAME, process });
-const s3bucket = new AWS.S3({
-  region: 'ap-south-1',
-
-  accessKeyId: REACT_APP_IAM_USER_KEY,
-  secretAccessKey: REACT_APP_IAM_USER_SECRET
-});
-const uploadToS3 = async () => {
-  try {
-    const params = {
-      // Delimiter: '/',
-      Bucket: REACT_APP_BUCKET_NAME,
-    };
-
-    const data = await s3bucket.listObjects(params).promise();
-
-    for (let index = 1; index < data['Contents'].length; index++) {
-      console.log(data['Contents'][index]['Key'])
-    }
-
-    for (let index = 1; index < data['Contents'].length; index++) {
-      console.log(data['Contents'][index]['Key'])
-    }
-
-  } catch (error) {
-    console.log(error);
-
-  }
+const getImages = (getData) => {
+  axios.get("https://a7ok2yvaph.execute-api.ap-south-1.amazonaws.com/prod").then(data => {
+    getData(data.data);
+  });
 }
 
 function App() {
+  const [data, getData] = useState([]);
   useEffect(() => {
-    uploadToS3();
-  }, [])
+    getImages(getData);
+  }, []);
+
   return (
     <div className="App">
-
+      {data.map(data => <img src={data.id} />)}
     </div>
   );
 }

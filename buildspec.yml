@@ -3,11 +3,33 @@ version: 0.2
 phases: 
   pre_build:
     commands:
+      - echo "Installing dependencies..."
       - cd reactimageviewer 
       - npm install
+      - cd ..
+      - cd s3Upload
+      - npm install
+      - cd ..
+      - cd dynamoDb
+      - npm install
+      - cd ..
   build:
     commands:
+      - echo "Building and zipping..."
+      - cd reactimageviewer
       - npm run build
+      - cd ..
+      - cd s3Upload
+      - zip -r9 s3Upload.zip .
+      - cd ..
+      - cd dynamoDb
+      - zip -r9 dynamoDb.zip .
+      - cd ..
+  post_build:
+    commands:
+      - echo "Uploading to lambda..."
+      - aws lambda update-function-code --function-name s3Upload --zip-file fileb://s3Upload/s3Upload.zip
+      - aws lambda update-function-code --function-name s3ApiGateway --zip-file fileb://dynamoDb/dynamoDb.zip
 
 artifacts:
   files:

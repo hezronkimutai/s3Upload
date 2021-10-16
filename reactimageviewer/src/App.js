@@ -17,7 +17,11 @@ function App() {
 
   return (
     <div className="App">
-      {data.map(data => <img src={data.id} />)}
+      <ul>
+        {data.map(data => <li><img src={data.url} width="200px" style={{ margin: 'auto' }} /><p>{data.name}</p></li>)}
+      </ul>
+      <div class="light"></div>
+
     </div>
   );
 }

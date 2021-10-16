@@ -3,15 +3,14 @@ version: 0.2
 phases: 
   pre_build:
     commands:
-      - cd s3Upload 
+      - cd reactimageviewer 
       - npm install
   build:
     commands:
-      - cd s3Upload 
       - npm run build
 
 artifacts:
   files:
     - "**/**"
   discard-paths: no
-  base-directory: build
+  base-directory: reactimageviewer/build
